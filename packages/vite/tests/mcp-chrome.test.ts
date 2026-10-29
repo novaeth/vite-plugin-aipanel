@@ -76,6 +76,41 @@ describe("parseListPages", () => {
     ]);
   });
 
+  it("标题自带括号时仍以行尾括号组为 URL（真实页面：SuperHive (local) 等）", () => {
+    const pages = parseListPages(
+      [
+        "3: 排查 GitOps 工具调不通问题 (1) — DeepSeek Harness (http://127.0.0.1:3080/)",
+        "16: SuperHive (local) · 登录 (http://localhost:5173/login)",
+      ].join("\n"),
+    );
+    expect(pages).toEqual([
+      {
+        pageId: 3,
+        title: "排查 GitOps 工具调不通问题 (1) — DeepSeek Harness",
+        url: "http://127.0.0.1:3080/",
+        selected: false,
+      },
+      {
+        pageId: 16,
+        title: "SuperHive (local) · 登录",
+        url: "http://localhost:5173/login",
+        selected: false,
+      },
+    ]);
+  });
+
+  it("URL 自带括号时按括号深度取完整 URL", () => {
+    const pages = parseListPages("4: Foo (https://en.wikipedia.org/wiki/Foo_(bar))");
+    expect(pages).toEqual([
+      {
+        pageId: 4,
+        title: "Foo",
+        url: "https://en.wikipedia.org/wiki/Foo_(bar)",
+        selected: false,
+      },
+    ]);
+  });
+
   it("标题尾部省略号（...）会被裁剪，pageId 按十进制解析", () => {
     const pages = parseListPages("56: Building the app... (http://localhost:5173/)");
     expect(pages).toHaveLength(1);

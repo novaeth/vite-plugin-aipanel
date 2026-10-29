@@ -100,19 +100,45 @@ export interface PageInfo {
   selected: boolean;
 }
 
+/**
+ * 从 "Title (URL)" 中拆出标题与 URL。
+ * 标题和 URL 都可能自带括号（如 "SuperHive (local) · 登录"、"…/Foo_(bar)"），
+ * 所以从行尾按括号深度反向定位 URL 的最外层左括号，而不是从左往右取第一对括号。
+ */
+function splitTitleAndUrl(content: string): { title: string; url: string } | null {
+  if (!content.endsWith(")")) return null;
+  let depth = 0;
+  for (let i = content.length - 1; i >= 0; i--) {
+    const ch = content[i];
+    if (ch === ")") depth++;
+    else if (ch === "(") {
+      depth--;
+      if (depth === 0) {
+        const url = content.slice(i + 1, -1);
+        if (!url || /\s/.test(url)) return null;
+        return { title: content.slice(0, i).trim(), url };
+      }
+    }
+  }
+  return null;
+}
+
 /** 解析 list_pages 返回的文本。格式："56: Title (URL) [selected]" */
 export function parseListPages(text: string): PageInfo[] {
   const pages: PageInfo[] = [];
-  for (const line of text.split("\n")) {
-    const match = line.match(/^(\d+):\s*(.+?)\s*\((\S+)\)/);
-    if (match) {
-      pages.push({
-        pageId: parseInt(match[1], 10),
-        title: match[2].replace(/\s*\.{3}$/, "").trim(),
-        url: match[3],
-        selected: /\[selected\]/i.test(line),
-      });
-    }
+  for (const rawLine of text.split("\n")) {
+    const line = rawLine.trimEnd();
+    const selected = /\[selected\]/i.test(line);
+    const match = line.replace(/\s*\[selected\]$/i, "").match(/^(\d+):\s*(.*)$/);
+    if (!match) continue;
+    const parsed = splitTitleAndUrl(match[2]);
+    if (!parsed) continue;
+    pages.push({
+      pageId: parseInt(match[1], 10),
+      title: parsed.title.replace(/\s*\.{3}$/, "").trim(),
+      url: parsed.url,
+      selected,
+    });
   }
   return pages;
 }

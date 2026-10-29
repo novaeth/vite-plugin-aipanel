@@ -46,7 +46,7 @@
     "@code-inspector/core": "^2.0.9",
     "@vue/devtools-kit": "^8.0.0",
     "@vue/language-server": "^3.3.7",
-    "chrome-devtools-mcp": "^1.9.0",
+    "chrome-devtools-mcp": "1.12.0",
     "execa": "^9.6.1",
     "picomatch": "^4.0.2",
     "typescript-language-server": "^5.3.0",

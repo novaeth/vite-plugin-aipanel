@@ -8,6 +8,7 @@ export interface OfficialToolMeta {
 }
 
 export const OFFICIAL_TOOL_META: OfficialToolMeta[] = [
+  { name: "analyze_heapsnapshot_contexts", category: "MEMORY", readOnlyHint: true, pageScoped: false, conditions: ["memoryDebugging"] },
   { name: "click", category: "INPUT", readOnlyHint: false, pageScoped: true, conditions: [] },
   { name: "click_at", category: "INPUT", readOnlyHint: false, pageScoped: true, conditions: ["experimentalVision"] },
   { name: "close_heapsnapshot", category: "MEMORY", readOnlyHint: false, pageScoped: false, conditions: ["memoryDebugging"] },
@@ -21,6 +22,8 @@ export const OFFICIAL_TOOL_META: OfficialToolMeta[] = [
   { name: "fill", category: "INPUT", readOnlyHint: false, pageScoped: true, conditions: [] },
   { name: "fill_form", category: "INPUT", readOnlyHint: false, pageScoped: true, conditions: [] },
   { name: "get_console_message", category: "DEBUGGING", readOnlyHint: true, pageScoped: true, conditions: [] },
+  { name: "get_css_styles", category: "DEBUGGING", readOnlyHint: true, pageScoped: true, conditions: [] },
+  { name: "get_devtools_comments", category: "DEBUGGING", readOnlyHint: true, pageScoped: true, conditions: ["devtoolsComments"] },
   { name: "get_heapsnapshot_class_nodes", category: "MEMORY", readOnlyHint: true, pageScoped: false, conditions: ["memoryDebugging"] },
   { name: "get_heapsnapshot_details", category: "MEMORY", readOnlyHint: true, pageScoped: false, conditions: ["memoryDebugging"] },
   { name: "get_heapsnapshot_dominators", category: "MEMORY", readOnlyHint: true, pageScoped: false, conditions: ["memoryDebugging"] },
@@ -46,6 +49,7 @@ export const OFFICIAL_TOOL_META: OfficialToolMeta[] = [
   { name: "list_webmcp_tools", category: "WEBMCP", readOnlyHint: true, pageScoped: true, conditions: [] },
   { name: "navigate_page", category: "NAVIGATION", readOnlyHint: false, pageScoped: true, conditions: [] },
   { name: "new_page", category: "NAVIGATION", readOnlyHint: false, pageScoped: false, conditions: [] },
+  { name: "open_devtools", category: "DEBUGGING", readOnlyHint: true, pageScoped: true, conditions: ["devtoolsComments"] },
   { name: "performance_analyze_insight", category: "PERFORMANCE", readOnlyHint: true, pageScoped: true, conditions: [] },
   { name: "performance_start_trace", category: "PERFORMANCE", readOnlyHint: false, pageScoped: true, conditions: [] },
   { name: "performance_stop_trace", category: "PERFORMANCE", readOnlyHint: false, pageScoped: true, conditions: [] },
@@ -53,8 +57,10 @@ export const OFFICIAL_TOOL_META: OfficialToolMeta[] = [
   { name: "query_heapsnapshot_objects", category: "MEMORY", readOnlyHint: true, pageScoped: false, conditions: ["memoryDebugging"] },
   { name: "reload_extension", category: "EXTENSIONS", readOnlyHint: false, pageScoped: false, conditions: [] },
   { name: "resize_page", category: "EMULATION", readOnlyHint: false, pageScoped: true, conditions: [] },
-  { name: "screencast_start", category: "DEBUGGING", readOnlyHint: false, pageScoped: true, conditions: ["experimentalScreencast"] },
-  { name: "screencast_stop", category: "DEBUGGING", readOnlyHint: false, pageScoped: true, conditions: ["experimentalScreencast"] },
+  { name: "resolve_devtools_comment", category: "DEBUGGING", readOnlyHint: false, pageScoped: true, conditions: ["devtoolsComments"] },
+  { name: "reveal_in_devtools", category: "DEBUGGING", readOnlyHint: true, pageScoped: true, conditions: ["devtoolsComments"] },
+  { name: "screencast_start", category: "DEBUGGING", readOnlyHint: false, pageScoped: true, conditions: [] },
+  { name: "screencast_stop", category: "DEBUGGING", readOnlyHint: false, pageScoped: true, conditions: [] },
   { name: "select_page", category: "NAVIGATION", readOnlyHint: true, pageScoped: false, conditions: [] },
   { name: "take_heapsnapshot", category: "MEMORY", readOnlyHint: false, pageScoped: true, conditions: [] },
   { name: "take_screenshot", category: "DEBUGGING", readOnlyHint: false, pageScoped: true, conditions: [] },

@@ -94,7 +94,8 @@ describe("officialDefaultShorts 推导规则", () => {
   it("受条件限制或 unsafe 分类的工具不出现在默认面", () => {
     const shorts = officialDefaultShorts();
     expect(shorts).not.toContain("get_tab_id"); // experimentalInteropTools 条件
-    expect(shorts).not.toContain("screencast_start"); // experimentalScreencast 条件
+    expect(shorts).not.toContain("get_devtools_comments"); // devtoolsComments 条件
+    expect(shorts).toContain("screencast_start"); // 官方已无条件，默认暴露
     expect(shorts).not.toContain("install_extension"); // EXTENSIONS
     expect(shorts).not.toContain("execute_webmcp_tool"); // WEBMCP
     expect(shorts).not.toContain("list_3p_developer_tools"); // THIRD_PARTY
@@ -113,7 +114,6 @@ describe("isOfficialExtraTool / extraToolFlag / officialExtraCandidates", () => 
 
   it("extraToolFlag 把 experimental 条件转成 CLI flag（camelCase → kebab）", () => {
     expect(extraToolFlag("get_tab_id")).toBe("--experimental-interop-tools");
-    expect(extraToolFlag("screencast_start")).toBe("--experimental-screencast");
     expect(extraToolFlag("click_at")).toBe("--experimental-vision");
     expect(extraToolFlag("click")).toBeUndefined();
     expect(extraToolFlag("unknown")).toBeUndefined();
