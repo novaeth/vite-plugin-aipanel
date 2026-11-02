@@ -235,7 +235,12 @@ Please upgrade:
     const settingsPatchPath =
       inheritSource === null
         ? null
-        : writeInheritLayer({ cwd: options.cwd, home: this.opts.home, source: inheritSource });
+        : writeInheritLayer({
+            cwd: options.cwd,
+            home: this.opts.home,
+            source: inheritSource,
+            target: this.opts.profile,
+          });
 
     // dsh 服务 schema 只接受 127.0.0.1 / 0.0.0.0，且 CLI 拒绝 0.0.0.0 —— 强制 loopback
     const proc = startDeepSeekWeb({

@@ -315,8 +315,9 @@ aipanelAssistant({
 >
 > 所以自建 profile（`workbench`、`codexlab` 等）要**先用它自己的安装流程建好**再填进这里 —— 例如工作台：`npx --yes @dsh-workbench/core@latest setup`。
 >
-> **关于 `providerOptions.settingsFrom`（默认 `web`，不用配）**：dsh 的组合层只有 `bundle → profile → home → --patch`，**没有 profile 继承 profile**。所以一旦把 `profile` 换成自建 profile，你在 `dsh web` 里配过的模型供应商 / 搜索源 / MCP 本来是不会跟过去的 —— 会用建 profile 那一刻的快照。现在默认把默认 profile（`web`）的配置作为一层 `--patch` 叠上去：**两边同源，改一处两边都生效**（`profile` 仍填 `web` 时这层等于没有，行为不变）。
+> **关于 `providerOptions.settingsFrom`（默认 `web`，不用配）**：dsh 的组合层只有 `bundle → profile → home → --patch`，**没有 profile 继承 profile**。所以一旦把 `profile` 换成自建 profile，你在 `dsh web` 里配过的模型供应商 / 搜索源 / MCP 本来是不会跟过去的 —— 会用建 profile 那一刻的快照。现在默认把默认 profile（`web`）的配置作为一层 `--patch` 叠上去，**只补目标 profile 自己没写过的行**（`profile` 仍填 `web` 时这层等于没有，行为不变）。
 >
+> - **目标 profile 自己写过的行不继承（目标作主）**：`--patch` 是最高层，且 dsh 对同 id 的条目是**整段 `config` 替换**。所以目标 `cordis.patch.yml` 里已有的条目、以及它自己 `- insert:` 过的 id，来源层一律让开。例：`workbench` 自己维护 `llm-pi-ai` / `agent-default-model`，它的模型配置与默认模型不会被 `web` 的那套盖掉；`web` 里独有的行仍会补进来。目标自己管 `llm-pi-ai` 时，来源的 `agent-default-model` 也一并不继承 —— 那个默认值可能指向目标供应商列表里没有的 provider。
 > - 每个界面**自己的偏好**（如主题）永远不继承 —— 那类行跟着来源走会把界面锁死（比如在工作台里切浅色会被 web 的深色顶回去）。
 > - 想只保留目标 profile 自己的配置：`settingsFrom: false`。想换来源 profile：填它的名字。
 

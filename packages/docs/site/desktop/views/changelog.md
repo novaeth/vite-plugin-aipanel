@@ -1,5 +1,22 @@
 # 更新日志
 
+## v1.3.14
+
+`2026-11-02`
+
+### deepseek
+
+#### 🐛 修复
+
+- **继承不再盖掉目标 profile 自己的配置（target wins）**：`providerOptions.settingsFrom` 默认把 `web` 的 `cordis.patch.yml` 作为最高层的 `--patch` 叠到自建 profile 上，而 dsh 对同 id 的条目是**整段 `config` 替换**。于是 `workbench` 这类自己维护模型配置的 profile，`llm-pi-ai` / `agent-default-model` 会被 web 的整段盖掉：模型选择器里出现的是 web 的模型（如 `pagoda-llm` 下的 `qwen3.8:27b`、`deepseek-v4-flash`），默认模型也跟着变成 web 的，而 workbench 自己的配置在 Settings 里还改不动。现在继承只补目标**没写过**的行：目标 `cordis.patch.yml` 里的顶层 `- id:` 与它 `- insert:` 的 id 由目标作主，来源层让开；目标没写的机器级设置（搜索源、MCP 等）照常继承。目标自己管 `llm-pi-ai` 时，来源的 `agent-default-model` 也一并不继承（避免默认模型指向目标供应商列表里没有的 provider）
+- 目标已经 insert 过的 id 不再被来源的 `- insert:` 叠第二遍（此前 `web-search-exa` 会在组合结果里出现两条同 id 条目）
+
+### docs
+
+#### 🐛 修复
+
+- `providerOptions.settingsFrom` 的文档补上「目标 profile 自己写过的行不继承」与 target wins 的原因
+
 ## v1.3.12
 
 `2026-10-12`
